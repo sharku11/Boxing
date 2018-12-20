@@ -1,0 +1,15 @@
+
+# dependencies
+/node_modules
+
+# builds
+/dist
+/build
+
+# configurations
+/config
+
+# create-react-app utils
+/scripts
+/coverage
+/src/serviceWorker.js
