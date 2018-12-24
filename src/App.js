@@ -19,7 +19,20 @@ class App extends Component {
     }
     this.moveLeft = this.moveLeft.bind(this)
     this.moveRight = this.moveRight.bind(this)
+    this.rematch = this.rematch.bind(this)
     this.checkDamage = this.checkDamage.bind(this)
+  }
+
+  rematch() {
+    if(this.state.winner) {
+      this.setState({
+        leftBoxerHealth: 100,
+        rightBoxerHealth: 100,
+        leftBoxerPosition: IP.leftBoxer,
+        rightBoxerPosition: IP.rightBoxer,
+        winner: null,
+      })
+    }
   }
 
   checkWinner() {
@@ -74,14 +87,20 @@ class App extends Component {
 
   render(){
     return (
-      <div className="wrapper">
+      <div className="wrapper"
+        onClick={this.rematch}>
         <div className="ring">
           <div className="ring-inner" />
           <Score health={this.state.leftBoxerHealth}
             name="left" />
           <Score health={this.state.rightBoxerHealth}
             name="right" />
-          <div className="speaker">{this.state.winner ? `${this.state.winner} wins` : ''}</div>
+          <div className="speaker">
+            {this.state.winner ? <>
+              {this.state.winner} wins
+              <p className="rematch-message">Click anywhere to rematch</p>
+            </> : ''}
+          </div>
           <Boxer
             allowAction={!this.state.winner}
             checkDamage={this.checkDamage}

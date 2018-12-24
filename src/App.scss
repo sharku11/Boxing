@@ -30,9 +30,17 @@ html{
 }
 .speaker{
 	position: absolute;
-	top: 140px;
+	top: 100px;
 	left: 50%;
 	color: #ffffff;
     transform: translateX(-50%);
-    font-size: 22px;
+	font-size: 26px;
+	font-weight: 600;
+	text-transform: uppercase;
+	.rematch-message {
+		text-transform: none;
+		font-weight: normal;
+		font-size: 22px;
+		padding-top: 20px;
+	}
 }
