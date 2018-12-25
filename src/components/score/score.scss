@@ -25,7 +25,15 @@
                 height: 100%;
                 top: 0;
                 left: 0;
-                background: yellow;
+                &.good {
+                    background: greenyellow;
+                }
+                &.warn {
+                    background: yellow;
+                }
+                &.danger {
+                    background: red;
+                }
             }
         }
     }

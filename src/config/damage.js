@@ -1,6 +1,6 @@
-import { hitTypes } from '../constants'
+import { movementTypes } from '../constants'
 
 export default {
-  [hitTypes.jab]: 10,
-  [hitTypes.hook]: 20,
+  [movementTypes.jab]: 10,
+  [movementTypes.hook]: 20,
 }

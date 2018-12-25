@@ -1,0 +1,26 @@
+.modeSelection {
+  color: #fff;
+  position: absolute;
+  top: 30px;
+  left: 42%;
+  font-size: 34px;
+  color: goldenrod;
+  text-shadow: 2px 2px #000;
+  .modeSelection_title {
+    font-size: 20px;
+    text-align: left;
+    padding-bottom: 20px;
+    font-weight: 600;
+  }
+  .item {
+    color: #fff;
+    font-size: 28px;
+    text-align: left;
+    padding-top: 5px;
+    padding-left: 50px;
+    &:hover {
+      color: goldenrod;
+      cursor: pointer;
+    }
+  }
+}

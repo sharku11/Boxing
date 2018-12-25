@@ -1,9 +1,10 @@
-import React from 'react'
 import PropTypes from 'prop-types'
+import React from 'react'
 
 import './boxer.scss'
-import { movementPositions, hitTypes } from '../../constants'
 import { controls as C } from '../../config'
+import { movementPositions, movementTypes } from '../../constants'
+
 class Boxer extends React.Component{
   static propTypes = {
     allowAction: PropTypes.bool,
@@ -12,10 +13,12 @@ class Boxer extends React.Component{
     moveLeft: PropTypes.func.isRequired,
     moveRight: PropTypes.func.isRequired,
     checkDamage: PropTypes.func.isRequired,
+    controlsByComputer: PropTypes.bool,
   }
 
   static defaultProps = {
     allowAction: true,
+    controlsByComputer: false,
   }
 
   constructor(props) {
@@ -23,6 +26,7 @@ class Boxer extends React.Component{
     this.state = {
       image: movementPositions.initialPosition
     }
+    this._doRandomThings = this._doRandomThings.bind(this)
   }
 
   componentDidMount() {
@@ -33,18 +37,16 @@ class Boxer extends React.Component{
       console.log(ev.keyCode)
       switch(ev.keyCode) {
         case codes.left:
-          this.animateMoving()
-          this.props.moveLeft(id)
+          this.move(true)
           break
         case codes.right:
-          this.animateMoving()
-          this.props.moveRight(id)
+          this.move()
           break
-        case codes[hitTypes.jab]:
-          this.hit(id, hitTypes.jab)
+        case codes[movementTypes.jab]:
+          this.hit(id, movementTypes.jab)
           break
-        case codes[hitTypes.hook]:
-          this.hit(id, hitTypes.hook)
+        case codes[movementTypes.hook]:
+          this.hit(id, movementTypes.hook)
           break
         default:
           return
@@ -52,20 +54,46 @@ class Boxer extends React.Component{
     })
   }
 
-  animateMoving() {
+  componentDidUpdate(prevProps) {
+    if(prevProps.controlsByComputer != this.props.controlsByComputer) {
+      this.props.controlsByComputer ? setInterval(() => this._doRandomThings()(), 300) : this._clearAllIntervals()
+    }
+  }
+
+  _animateMoving(movingType) {
     if(!this.props.allowAction) return
-    this.setState({ image: movementPositions.moving })
+    this.setState({ image: movementPositions[movingType] })
     setTimeout(() => {
       this.setState({ image: movementPositions.initialPosition })
     }, 100)
   }
 
+  _clearAllIntervals() {
+    for (let i = 0; i<= 9999; i++) {
+      clearInterval(i)
+    }
+  }
+
+  _doRandomThings() {
+    const actions = [
+      () => {this.move(true)},
+      () => {this.move(false)},
+      () => {this.hit(this.props.id, movementTypes.jab)},
+      () => {this.hit(this.props.id, movementTypes.hook)}
+    ]
+    let rdmActionIdx = Math.round(Math.random() * (actions.length - 1))
+    return actions[rdmActionIdx]
+  }
+
+  move(toLeft) {
+    const { id } = this.props
+    this._animateMoving(movementTypes.moving)
+    toLeft ? this.props.moveLeft(id) : this.props.moveRight(id)
+  }
+
   hit(id, hitType) {
     if(!this.props.allowAction) return
-    this.setState({ image: movementPositions[hitType] })
-    setTimeout(() => {
-      this.setState({ image: movementPositions.initialPosition })
-    }, 100)
+    this._animateMoving(hitType)
     this.props.checkDamage(id, hitType)
   }
 
@@ -80,4 +108,5 @@ class Boxer extends React.Component{
     )
   }
 }
+
 export default Boxer

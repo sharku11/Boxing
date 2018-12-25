@@ -9,7 +9,7 @@ export default {
   },
   jab: {
     backgroundPosition: '-290px 0',
-    zIndex: '0',
+    zIndex: '1',
   },
   hook: {
     backgroundPosition: '-580px -570px',
